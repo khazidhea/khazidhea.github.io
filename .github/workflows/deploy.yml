@@ -7,22 +7,15 @@ on:
   # Позволяет запускать этот workflow вручную из вкладки Actions
   workflow_dispatch:
 
-# Разрешения для деплоя на GitHub Pages
+# Разрешения для деплоя
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Разрешить только один одновременный деплой
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  contents: write  # Для прямого пуша в ветку gh-pages
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install pnpm
@@ -39,62 +32,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build site
+      - name: Build
         run: pnpm run build
 
-      # Verify dist directory exists and is not empty
-      - name: Check dist directory
-        run: |
-          echo "Checking the dist directory content..."
-          ls -la dist || echo "dist directory not found!"
-          if [ -d "dist" ]; then
-            find dist -type f | wc -l
-          fi
-
-      # Ensure CNAME and other files are copied
-      - name: Copy public files
+      - name: Copy public files to dist
         run: |
           if [ -d "dist" ]; then
             cp -r public/* dist/ || true
-            echo "Content after copying public files:"
+            echo "Content after copying:"
             ls -la dist
           else
-            echo "ERROR: dist directory not found"
+            echo "Error: dist directory not found"
             exit 1
           fi
 
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v4
-
-      # Используем простой метод для загрузки странички
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4  # Использование стандартного upload-artifact вместо специального
-        with:
-          name: github-pages
-          path: dist
-          if-no-files-found: error
-          retention-days: 1
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: ./dist
-
-      # Вручную создаем артефакт для Pages
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1  # Используем v1 для избежания проблем
-        with:
-          path: ./dist
-
+      # Этот метод использует прямой пуш в ветку gh-pages, обходя проблемы с Pages API
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1  # Используем v1 для согласованности
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages
+          clean: true
