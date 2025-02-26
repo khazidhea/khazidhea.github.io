@@ -1,0 +1,103 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  lang: string;
+  isOnePage?: boolean;
+}
+
+const { title, description, icon, lang = "en", isOnePage = false } = Astro.props;
+
+// Simple function to render icons (in a real project you might use an icon library)
+const getIconHtml = (iconName: string) => {
+  const icons: Record<string, string> = {
+    code: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
+    brain: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44A2.5 2.5 0 0 1 4.5 17v-2.17A3 3 0 0 1 5 9a3 3 0 0 1 4.5-2.59A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44A2.5 2.5 0 0 0 19.5 17v-2.17A3 3 0 0 0 19 9a3 3 0 0 0-4.5-2.59A2.5 2.5 0 0 0 14.5 2Z"></path></svg>',
+    palette: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"></circle><circle cx="17.5" cy="10.5" r=".5"></circle><circle cx="8.5" cy="7.5" r=".5"></circle><circle cx="6.5" cy="12.5" r=".5"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>'
+  };
+
+  return icons[iconName] || '<svg viewBox="0 0 24 24" width="24" height="24"></svg>';
+};
+
+// Generate link target - either to a separate page or an anchor on same page
+const linkTarget = isOnePage
+  ? `#${title.toLowerCase().replace(/\s+/g, '-')}`
+  : `/${lang}/services#${title.toLowerCase().replace(/\s+/g, '-')}`;
+---
+
+<div class="service-card">
+  <div class="icon" set:html={getIconHtml(icon)}></div>
+  <h3>{title}</h3>
+  <p>{description}</p>
+  <a href={linkTarget} class="learn-more">
+    {lang === 'en' ? 'Learn More' : 'Подробнее'}
+  </a>
+</div>
+
+<style>
+  .service-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .icon {
+    color: var(--primary-color);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .learn-more {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s;
+  }
+
+  .learn-more::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+
+  .learn-more:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+</style>

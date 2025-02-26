@@ -1,0 +1,185 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  lang: string;
+}
+
+const { title, subtitle, lang } = Astro.props;
+
+// Scroll text based on language
+const scrollText = lang === 'en' ? 'Scroll Down' : 'Прокрутите вниз';
+---
+
+<section id="home" class="hero">
+  <div class="hero-content">
+    <h1>{title}</h1>
+    <p>{subtitle}</p>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="scroll-indicator">
+    <div class="mouse">
+      <div class="wheel"></div>
+    </div>
+    <div class="arrows">
+      <span class="arrow"></span>
+      <span class="arrow"></span>
+      <span class="arrow"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero-content {
+    max-width: 800px;
+    padding: 0 2rem;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  /* New elegant scroll indicator styles */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .mouse {
+    width: 30px;
+    height: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  .wheel {
+    width: 4px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 2px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scroll 2s infinite;
+  }
+
+  .arrows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .arrow {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+    transform: rotate(45deg);
+    animation: arrow 2s infinite;
+    opacity: 0;
+  }
+
+  .arrow:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .arrow:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .arrow:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes scroll {
+    0% {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(20px);
+    }
+  }
+
+  @keyframes arrow {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .scroll-indicator:hover .mouse {
+    border-color: #fff;
+  }
+
+  .scroll-indicator:hover .arrow {
+    border-color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+  }
+</style>
+
+<script>
+  // Add click handler for smooth scroll
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+
+    if (scrollIndicator) {
+      scrollIndicator.addEventListener('click', () => {
+        // Scroll to the next section
+        const nextSection = document.querySelector('section:nth-of-type(2)');
+        if (nextSection) {
+          nextSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+  });
+</script>

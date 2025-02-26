@@ -1,0 +1,391 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import ProjectShowcase from '../../components/ProjectShowcase.astro';
+import AboutSection from '../../components/AboutSection.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'ru';
+const t = useTranslations(lang);
+
+const services = [
+  {
+    title: "Веб-разработка",
+    description: "Современные, адаптивные веб-сайты, созданные с использованием новейших технологий.",
+    icon: "code"
+  },
+  {
+    title: "ИИ Решения",
+    description: "Индивидуальная интеграция искусственного интеллекта для расширения возможностей вашего бизнеса.",
+    icon: "brain"
+  },
+  {
+    title: "UI/UX Дизайн",
+    description: "Красивые, интуитивно понятные интерфейсы, разработанные для оптимального пользовательского опыта.",
+    icon: "palette"
+  }
+];
+
+const projects = [
+  {
+    title: "AI Content Platform",
+    description: "Платформа для создания и управления контентом с помощью ИИ.",
+    image: "/images/project1.jpg",
+    tags: ["React", "AI", "Node.js"]
+  },
+  {
+    title: "E-commerce Redesign",
+    description: "Полный редизайн сайта электронной коммерции с фокусом на конверсию.",
+    image: "/images/project2.jpg",
+    tags: ["Design", "Shopify", "UX"]
+  },
+  {
+    title: "Real-time Analytics Dashboard",
+    description: "Панель мониторинга и анализа данных в реальном времени.",
+    image: "/images/project3.jpg",
+    tags: ["Vue", "D3.js", "Firebase"]
+  }
+];
+---
+
+<MainLayout
+  title="azamat.ai | Веб-разработка и ИИ решения"
+  description="Профессиональная веб-разработка и ИИ решения от azamat.ai"
+  currentLanguage={lang}
+  currentPath={Astro.url.pathname}
+  isOnePageLayout={true}
+>
+  <HeroSection
+    title="Создаем Цифровые Решения и ИИ Технологии"
+    subtitle="Мы разрабатываем современные веб-сайты и приложения с искусственным интеллектом, которые помогают бизнесу преуспевать в цифровую эпоху."
+    lang={lang}
+  />
+
+  <section id="services" class="services">
+    <div class="container">
+      <h2 class="section-title">{t('sections.services')}</h2>
+      <div class="services-grid">
+        {services.map(service => (
+          <ServiceCard
+            title={service.title}
+            description={service.description}
+            icon={service.icon}
+            lang={lang}
+            isOnePage={true}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="parallax-divider parallax-services"></div>
+
+  <section id="projects" class="projects">
+    <div class="container">
+      <h2 class="section-title">{t('sections.projects')}</h2>
+      <div class="projects-grid">
+        {projects.map(project => (
+          <ProjectShowcase
+            title={project.title}
+            description={project.description}
+            image={project.image}
+            tags={project.tags}
+            lang={lang}
+            isOnePage={true}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="parallax-divider parallax-projects"></div>
+
+  <AboutSection lang={lang} />
+
+  <div class="parallax-divider parallax-about"></div>
+
+  <ContactSection lang={lang} />
+</MainLayout>
+
+<style>
+  /* The same styles as in the English version */
+  /* Basic section styling */
+  section {
+    padding: 6rem 2rem;
+    scroll-margin-top: 80px; /* Offset for fixed header */
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+  }
+
+  /* Parallax dividers */
+  .parallax-divider {
+    height: 300px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+
+  .parallax-divider::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .parallax-services {
+    background-image: url('/images/parallax1.jpg');
+  }
+
+  .parallax-projects {
+    background-image: url('/images/parallax2.jpg');
+  }
+
+  .parallax-about {
+    background-image: url('/images/parallax3.jpg');
+  }
+
+  /* Services section */
+  .services {
+    background-color: var(--light-color);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  /* Projects section */
+  .projects {
+    background-color: white;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  /* About section */
+  .about {
+    background-color: var(--light-color);
+  }
+
+  .about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .about-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .about-text h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+  }
+
+  .about-text p {
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    color: #555;
+  }
+
+  /* Contact section */
+  .contact {
+    background-color: white;
+  }
+
+  .contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .contact-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-weight: 500;
+    color: var(--dark-color);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+
+  .submit-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    margin-top: 1rem;
+  }
+
+  .submit-button:hover {
+    background-color: #3178e0;
+  }
+
+  .contact-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+  }
+
+  .contact-info p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  .contact-details {
+    margin-bottom: 2rem;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .social-icon {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--light-color);
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .social-icon:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 900px) {
+    .about-content,
+    .contact-content {
+      grid-template-columns: 1fr;
+    }
+
+    .about-image {
+      order: 2;
+    }
+
+    .about-text {
+      order: 1;
+    }
+
+    .parallax-divider {
+      height: 200px;
+    }
+  }
+</style>
+
+<script>
+  // Same script as in the English version
+  document.addEventListener('DOMContentLoaded', () => {
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+
+    anchorLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          window.scrollTo({
+            top: target.offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Active navigation based on scroll position
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+    function highlightActiveSection() {
+      const scrollPosition = window.scrollY + 100;
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${sectionId}`) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }
+
+    window.addEventListener('scroll', highlightActiveSection);
+    highlightActiveSection(); // Initial check
+  });
+</script>

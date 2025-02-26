@@ -1,0 +1,120 @@
+---
+interface Props {
+  lang: string;
+}
+
+const { lang = "en" } = Astro.props;
+
+// Text content based on language
+const title = lang === 'en' ? 'Contact Us' : 'Связаться с Нами';
+const subtitle = lang === 'en'
+  ? 'Have a project in mind? Let\'s talk about it.'
+  : 'Есть проект? Давайте обсудим его.';
+const email = lang === 'en' ? 'Email' : 'Email';
+const getInTouch = lang === 'en' ? 'Get in touch' : 'Связаться';
+---
+
+<section id="contact" class="contact">
+  <div class="container">
+    <h2 class="section-title">{title}</h2>
+    <p class="section-subtitle">{subtitle}</p>
+
+    <div class="contact-card">
+      <div class="contact-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </div>
+      <div class="contact-info">
+        <h3>{email}</h3>
+        <p>azamat@galimzhanov.com</p>
+        <a href="mailto:azamat@galimzhanov.com" class="contact-button">{getInTouch}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background-color: #f8f9fa;
+    padding: 6rem 0;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+  }
+
+  .contact-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-icon {
+    background-color: rgba(58, 134, 255, 0.1);
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    margin-right: 2rem;
+    flex-shrink: 0;
+  }
+
+  .contact-info {
+    flex: 1;
+  }
+
+  .contact-info h3 {
+    font-size: 1.3rem;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-info p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .contact-button:hover {
+    background-color: #2d6fd9;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(58, 134, 255, 0.3);
+  }
+
+  @media (max-width: 576px) {
+    .contact-card {
+      flex-direction: column;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .contact-icon {
+      margin-bottom: 1rem;
+    }
+  }
+</style>

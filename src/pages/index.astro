@@ -1,0 +1,205 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import ProjectShowcase from '../components/ProjectShowcase.astro';
+
+const services = [
+  {
+    title: "Web Development",
+    description: "Modern, responsive websites built with the latest technologies.",
+    icon: "code"
+  },
+  {
+    title: "AI Solutions",
+    description: "Custom AI integrations to enhance your business capabilities.",
+    icon: "brain"
+  },
+  {
+    title: "UI/UX Design",
+    description: "Beautiful, intuitive interfaces designed for optimal user experience.",
+    icon: "palette"
+  }
+];
+
+const projects = [
+  {
+    title: "AI Content Platform",
+    description: "A platform for generating and managing AI-assisted content.",
+    image: "/images/project1.jpg",
+    tags: ["React", "AI", "Node.js"]
+  },
+  {
+    title: "E-commerce Redesign",
+    description: "Complete redesign of an e-commerce website focusing on conversion.",
+    image: "/images/project2.jpg",
+    tags: ["Design", "Shopify", "UX"]
+  },
+  {
+    title: "Real-time Analytics Dashboard",
+    description: "Dashboard for monitoring and analyzing data in real-time.",
+    image: "/images/project3.jpg",
+    tags: ["Vue", "D3.js", "Firebase"]
+  }
+];
+
+// This is a basic language detection and redirect page
+// In a production app, you might want to use the Accept-Language header or cookies
+
+// Redirect to the user's preferred language
+const preferredLanguage = 'en'; // Default to English; you can implement actual detection
+
+// Redirect to the preferred language path
+return Astro.redirect(`/${preferredLanguage}`);
+---
+
+<MainLayout title="Studio Name | Web Development & AI Solutions">
+  <HeroSection
+    title="Crafting Digital Experiences & AI Solutions"
+    subtitle="We build modern websites and AI-powered applications that help businesses thrive in the digital age."
+  />
+
+  <section class="services">
+    <div class="container">
+      <h2 class="section-title">Our Services</h2>
+      <div class="services-grid">
+        {services.map(service => (
+          <ServiceCard
+            title={service.title}
+            description={service.description}
+            icon={service.icon}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="projects">
+    <div class="container">
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="projects-grid">
+        {projects.map(project => (
+          <ProjectShowcase
+            title={project.title}
+            description={project.description}
+            image={project.image}
+            tags={project.tags}
+          />
+        ))}
+      </div>
+      <div class="cta-container">
+        <a href="/projects" class="cta-button">View All Projects</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-cta">
+    <div class="container">
+      <h2>Ready to bring your ideas to life?</h2>
+      <p>Let's collaborate on your next project and create something amazing together.</p>
+      <a href="/contact" class="cta-button">Get in Touch</a>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  /* Section styles */
+  section {
+    padding: 5rem 5%;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+  }
+
+  /* Services section */
+  .services {
+    background-color: var(--light-color);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  /* Projects section */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .cta-container {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  /* Contact CTA section */
+  .contact-cta {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    text-align: center;
+  }
+
+  .contact-cta h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-cta p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* CTA Button */
+  .cta-button {
+    display: inline-block;
+    background-color: white;
+    color: var(--primary-color);
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .contact-cta .cta-button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-cta .cta-button:hover {
+    background-color: white;
+    color: var(--primary-color);
+  }
+</style>

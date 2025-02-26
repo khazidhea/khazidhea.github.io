@@ -1,0 +1,76 @@
+---
+interface Props {
+  lang: string;
+}
+
+const { lang = "en" } = Astro.props;
+
+// Text content based on language
+const title = lang === 'en' ? 'About Us' : 'О Нас';
+const whoWeAre = lang === 'en' ? 'Who We Are' : 'Кто Мы';
+const approach = lang === 'en' ? 'Our Approach' : 'Наш Подход';
+
+const whoWeAreText = lang === 'en'
+  ? 'We are a team of passionate developers, designers, and AI specialists dedicated to creating exceptional digital experiences. With our expertise in cutting-edge technologies, we help businesses of all sizes transform their digital presence.'
+  : 'Мы - команда увлеченных разработчиков, дизайнеров и специалистов по ИИ, которые стремятся создавать исключительный цифровой опыт. С нашим опытом в передовых технологиях, мы помогаем бизнесу любого масштаба трансформировать свое цифровое присутствие.';
+
+const approachText = lang === 'en'
+  ? 'We believe in a collaborative approach, working closely with our clients to understand their needs and deliver solutions that exceed expectations. Our focus on innovation and quality ensures that every project we undertake stands out in today\'s competitive digital landscape.'
+  : 'Мы верим в совместный подход, тесно работая с нашими клиентами для понимания их потребностей и предоставления решений, которые превосходят ожидания. Наш фокус на инновациях и качестве гарантирует, что каждый проект, который мы беремся выполнить, выделяется в сегодняшнем конкурентном цифровом ландшафте.';
+---
+
+<section id="about" class="about">
+  <div class="container">
+    <h2 class="section-title">{title}</h2>
+    <div class="about-content">
+      <div class="about-text">
+        <h3>{whoWeAre}</h3>
+        <p>{whoWeAreText}</p>
+        <h3>{approach}</h3>
+        <p>{approachText}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: 6rem 0;
+    background-color: white;
+  }
+
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .about-text {
+    padding: 0 1rem;
+  }
+
+  .about-text h3 {
+    font-size: 1.8rem;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+
+  .about-text h3:first-child {
+    margin-top: 0;
+  }
+
+  .about-text p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 768px) {
+    .about-text h3 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

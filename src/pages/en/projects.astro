@@ -1,0 +1,32 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
+---
+
+<MainLayout
+  title="Our Projects | azamat.ai"
+  description="Featured projects and case studies by azamat.ai"
+  currentLanguage={lang}
+  currentPath={Astro.url.pathname}
+>
+  <div class="container page-content">
+    <h1>Our Projects</h1>
+    <p>This is a placeholder for the projects page. Content coming soon.</p>
+  </div>
+</MainLayout>
+
+<style>
+  .page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+</style>
