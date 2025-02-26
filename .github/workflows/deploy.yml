@@ -37,6 +37,11 @@ jobs:
       - name: Build site
         run: npm run build
 
+      # Ensure CNAME and other files are copied
+      - name: Copy public files
+        run: |
+          cp -r public/* dist/ || true
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
