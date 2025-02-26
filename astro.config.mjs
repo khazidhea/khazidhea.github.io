@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://azamat.ai',
+  base: '/',
   integrations: [],
   output: 'static',
   i18n: {
@@ -10,5 +11,8 @@ export default defineConfig({
     routing: {
       prefixDefaultLocale: true
     }
+  },
+  build: {
+    assetsPrefix: '/',
   }
 });
