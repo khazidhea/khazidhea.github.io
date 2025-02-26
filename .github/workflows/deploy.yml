@@ -56,21 +56,25 @@ jobs:
         run: |
           if [ -d "dist" ]; then
             cp -r public/* dist/ || true
-            echo "Content of dist after copying public files:"
+            echo "Content after copying public files:"
             ls -la dist
           else
-            echo "ERROR: dist directory not found, cannot copy public files"
+            echo "ERROR: dist directory not found"
             exit 1
           fi
 
-      # Use GitHub's official artifact action for pages
       - name: Setup Pages
+        id: pages
         uses: actions/configure-pages@v4
 
+      # Используем простой метод для загрузки странички
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2  # Try version 2 instead of 3
+        uses: actions/upload-artifact@v4  # Использование стандартного upload-artifact вместо специального
         with:
-          path: ./dist
+          name: github-pages
+          path: dist
+          if-no-files-found: error
+          retention-days: 1
 
   deploy:
     environment:
@@ -79,6 +83,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./dist
+
+      # Вручную создаем артефакт для Pages
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v1  # Используем v1 для избежания проблем
+        with:
+          path: ./dist
+
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2  # Match version with upload-pages-artifact
+        uses: actions/deploy-pages@v1  # Используем v1 для согласованности
