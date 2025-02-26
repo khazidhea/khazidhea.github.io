@@ -42,13 +42,33 @@ jobs:
       - name: Build site
         run: pnpm run build
 
+      # Verify dist directory exists and is not empty
+      - name: Check dist directory
+        run: |
+          echo "Checking the dist directory content..."
+          ls -la dist || echo "dist directory not found!"
+          if [ -d "dist" ]; then
+            find dist -type f | wc -l
+          fi
+
       # Ensure CNAME and other files are copied
       - name: Copy public files
         run: |
-          cp -r public/* dist/ || true
+          if [ -d "dist" ]; then
+            cp -r public/* dist/ || true
+            echo "Content of dist after copying public files:"
+            ls -la dist
+          else
+            echo "ERROR: dist directory not found, cannot copy public files"
+            exit 1
+          fi
+
+      # Use GitHub's official artifact action for pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v2  # Try version 2 instead of 3
         with:
           path: ./dist
 
@@ -61,4 +81,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v2  # Match version with upload-pages-artifact
