@@ -35,11 +35,13 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Copy public files to dist
+      - name: Copy public files and update CNAME
         run: |
           if [ -d "dist" ]; then
             cp -r public/* dist/ || true
-            echo "Content after copying:"
+            # Удаляем CNAME, чтобы не было редиректа на azamat.ai
+            rm -f dist/CNAME
+            echo "Content after copying and CNAME update:"
             ls -la dist
           else
             echo "Error: dist directory not found"
