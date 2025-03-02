@@ -1,8 +1,15 @@
 ---
+// Это главная английская страница на корневом уровне (/), без редиректов
+// Импортируйте все необходимые компоненты для английской версии
 import MainLayout from '../layouts/MainLayout.astro';
 import HeroSection from '../components/HeroSection.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import ProjectShowcase from '../components/ProjectShowcase.astro';
+import AboutSection from '../components/AboutSection.astro';
+import ContactSection from '../components/ContactSection.astro';
+
+const lang = 'en';
+const currentPath = Astro.url.pathname;
 
 const services = [
   {
@@ -43,23 +50,22 @@ const projects = [
   }
 ];
 
-// This is a basic language detection and redirect page
-// In a production app, you might want to use the Accept-Language header or cookies
-
-// Redirect to the user's preferred language
-const preferredLanguage = 'en'; // Default to English; you can implement actual detection
-
-// Redirect to the preferred language path
-return Astro.redirect(`/${preferredLanguage}`);
+// УДАЛЕНЫ ВСЕ СТРОКИ РЕДИРЕКТА!
 ---
 
-<MainLayout title="Studio Name | Web Development & AI Solutions">
+<MainLayout
+  title="Azamat Galimzhanov | Web Development & AI Solutions"
+  description="Professional web development and AI solutions by Azamat Galimzhanov"
+  currentLanguage={lang}
+  currentPath={currentPath}
+  isOnePageLayout={true}
+>
   <HeroSection
     title="Crafting Digital Experiences & AI Solutions"
     subtitle="We build modern websites and AI-powered applications that help businesses thrive in the digital age."
   />
 
-  <section class="services">
+  <section id="services" class="services">
     <div class="container">
       <h2 class="section-title">Our Services</h2>
       <div class="services-grid">
@@ -74,7 +80,7 @@ return Astro.redirect(`/${preferredLanguage}`);
     </div>
   </section>
 
-  <section class="projects">
+  <section id="projects" class="projects">
     <div class="container">
       <h2 class="section-title">Featured Projects</h2>
       <div class="projects-grid">
@@ -87,17 +93,40 @@ return Astro.redirect(`/${preferredLanguage}`);
           />
         ))}
       </div>
-      <div class="cta-container">
-        <a href="/projects" class="cta-button">View All Projects</a>
+    </div>
+  </section>
+
+  <!-- Добавляем раздел About Us, который был на скриншоте -->
+  <section id="about" class="about">
+    <div class="container">
+      <h2 class="section-title">About Us</h2>
+      <div class="about-content">
+        <div class="about-section">
+          <h3>Who We Are</h3>
+          <p>We are a team of passionate developers, designers, and AI specialists dedicated to creating exceptional digital experiences. With our expertise in cutting-edge technologies, we help businesses of all sizes transform their digital presence.</p>
+        </div>
+
+        <div class="about-section">
+          <h3>Our Approach</h3>
+          <p>We believe in a collaborative approach, working closely with our clients to understand their needs and deliver solutions that exceed expectations. Our focus on innovation and quality ensures that every project we undertake stands out in today's competitive digital landscape.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="contact-cta">
+  <!-- Добавляем раздел Contact Us, который был на скриншоте -->
+  <section id="contact" class="contact">
     <div class="container">
-      <h2>Ready to bring your ideas to life?</h2>
-      <p>Let's collaborate on your next project and create something amazing together.</p>
-      <a href="/contact" class="cta-button">Get in Touch</a>
+      <h2 class="section-title">Contact Us</h2>
+      <p class="contact-intro">Have a project in mind? Let's talk about it.</p>
+
+      <div class="contact-content">
+        <div class="contact-info">
+          <h3>Email</h3>
+          <p>azamat@galimzhanov.com</p>
+          <a href="mailto:azamat@galimzhanov.com" class="contact-button">Get in touch</a>
+        </div>
+      </div>
     </div>
   </section>
 </MainLayout>
@@ -154,7 +183,71 @@ return Astro.redirect(`/${preferredLanguage}`);
     text-align: center;
   }
 
-  /* Contact CTA section */
+  /* About section styles */
+  .about {
+    background-color: var(--light-color);
+  }
+
+  .about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .about-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+  }
+
+  .about-section p {
+    line-height: 1.6;
+    color: #555;
+  }
+
+  /* Contact section styles */
+  .contact-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+  }
+
+  .contact-content {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+  }
+
+  .contact-info p {
+    margin-bottom: 1.5rem;
+    color: #555;
+  }
+
+  .contact-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .contact-button:hover {
+    background-color: #3178e0;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Contact CTA section - оставляем стили на случай, если они используются в других местах */
   .contact-cta {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
@@ -201,5 +294,11 @@ return Astro.redirect(`/${preferredLanguage}`);
   .contact-cta .cta-button:hover {
     background-color: white;
     color: var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+    .about-content {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

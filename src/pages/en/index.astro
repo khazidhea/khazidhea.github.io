@@ -1,14 +1,15 @@
 ---
+// При настройке prefixDefaultLocale: false эта страница не должна вызывать редирект
+// Вместо этого просто импортируем и выводим тот же контент, что и на корневой странице
 import MainLayout from '../../layouts/MainLayout.astro';
 import HeroSection from '../../components/HeroSection.astro';
 import ServiceCard from '../../components/ServiceCard.astro';
 import ProjectShowcase from '../../components/ProjectShowcase.astro';
 import AboutSection from '../../components/AboutSection.astro';
 import ContactSection from '../../components/ContactSection.astro';
-import { useTranslations } from '../../i18n/utils';
 
 const lang = 'en';
-const t = useTranslations(lang);
+const currentPath = Astro.url.pathname;
 
 const services = [
   {
@@ -51,28 +52,26 @@ const projects = [
 ---
 
 <MainLayout
-  title="azamat.ai | Web Development & AI Solutions"
-  description="Professional web development and AI solutions by azamat.ai"
+  title="Azamat Galimzhanov | Web Development & AI Solutions"
+  description="Professional web development and AI solutions by Azamat Galimzhanov"
   currentLanguage={lang}
-  currentPath={Astro.url.pathname}
+  currentPath={currentPath}
   isOnePageLayout={true}
 >
   <HeroSection
     title="Crafting Digital Experiences & AI Solutions"
     subtitle="We build modern websites and AI-powered applications that help businesses thrive in the digital age."
-    lang={lang}
   />
 
   <section id="services" class="services">
     <div class="container">
-      <h2 class="section-title">{t('sections.services')}</h2>
+      <h2 class="section-title">Our Services</h2>
       <div class="services-grid">
         {services.map(service => (
           <ServiceCard
             title={service.title}
             description={service.description}
             icon={service.icon}
-            lang={lang}
             isOnePage={true}
           />
         ))}
@@ -84,7 +83,7 @@ const projects = [
 
   <section id="projects" class="projects">
     <div class="container">
-      <h2 class="section-title">{t('sections.projects')}</h2>
+      <h2 class="section-title">Featured Projects</h2>
       <div class="projects-grid">
         {projects.map(project => (
           <ProjectShowcase
@@ -92,7 +91,6 @@ const projects = [
             description={project.description}
             image={project.image}
             tags={project.tags}
-            lang={lang}
             isOnePage={true}
           />
         ))}
@@ -102,15 +100,45 @@ const projects = [
 
   <div class="parallax-divider parallax-projects"></div>
 
-  <AboutSection lang={lang} />
+  <!-- Добавляем раздел About Us, который был на скриншоте -->
+  <section id="about" class="about">
+    <div class="container">
+      <h2 class="section-title">About Us</h2>
+      <div class="about-content">
+        <div class="about-section">
+          <h3>Who We Are</h3>
+          <p>We are a team of passionate developers, designers, and AI specialists dedicated to creating exceptional digital experiences. With our expertise in cutting-edge technologies, we help businesses of all sizes transform their digital presence.</p>
+        </div>
+
+        <div class="about-section">
+          <h3>Our Approach</h3>
+          <p>We believe in a collaborative approach, working closely with our clients to understand their needs and deliver solutions that exceed expectations. Our focus on innovation and quality ensures that every project we undertake stands out in today's competitive digital landscape.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="parallax-divider parallax-about"></div>
 
-  <ContactSection lang={lang} />
+  <!-- Добавляем раздел Contact Us, который был на скриншоте -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2 class="section-title">Contact Us</h2>
+      <p class="contact-intro">Have a project in mind? Let's talk about it.</p>
+
+      <div class="contact-content">
+        <div class="contact-info">
+          <h3>Email</h3>
+          <p>azamat@galimzhanov.com</p>
+          <a href="mailto:azamat@galimzhanov.com" class="contact-button">Get in touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </MainLayout>
 
 <style>
-  /* Basic section styling */
+  /* Section styles */
   section {
     padding: 6rem 2rem;
     scroll-margin-top: 80px; /* Offset for fixed header */
@@ -182,18 +210,18 @@ const projects = [
     gap: 2rem;
   }
 
-  /* Projects section */
-  .projects {
-    background-color: white;
-  }
-
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
   }
 
-  /* About section */
+  .cta-container {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  /* About section styles */
   .about {
     background-color: var(--light-color);
   }
@@ -201,124 +229,80 @@ const projects = [
   .about-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: center;
+    gap: 2rem;
   }
 
-  .about-image img {
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  }
-
-  .about-text h3 {
-    font-size: 1.8rem;
+  .about-section h3 {
+    font-size: 1.5rem;
     margin-bottom: 1rem;
     color: var(--dark-color);
   }
 
-  .about-text p {
-    margin-bottom: 2rem;
-    line-height: 1.8;
+  .about-section p {
+    line-height: 1.6;
     color: #555;
   }
 
-  /* Contact section */
-  .contact {
-    background-color: white;
+  /* Contact section styles */
+  .contact-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
   }
 
   .contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-  }
-
-  .contact-form form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .form-group label {
-    font-weight: 500;
-    color: var(--dark-color);
-  }
-
-  .form-group input,
-  .form-group textarea {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: inherit;
-    resize: vertical;
-    transition: border-color 0.3s;
-  }
-
-  .form-group input:focus,
-  .form-group textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-  }
-
-  .submit-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s;
-    margin-top: 1rem;
-  }
-
-  .submit-button:hover {
-    background-color: #3178e0;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .contact-info h3 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
     color: var(--dark-color);
   }
 
   .contact-info p {
     margin-bottom: 1.5rem;
-    line-height: 1.6;
     color: #555;
   }
 
-  .contact-details {
-    margin-bottom: 2rem;
-  }
-
-  .social-links {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .social-icon {
+  .contact-button {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: var(--light-color);
-    color: var(--primary-color);
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: 500;
-    transition: background-color 0.3s, transform 0.3s;
-  }
-
-  .social-icon:hover {
     background-color: var(--primary-color);
     color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .contact-button:hover {
+    background-color: #3178e0;
+    color: white;
     transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Contact CTA section - оставляем стили на случай, если они используются в других местах */
+  .contact-cta {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    text-align: center;
+  }
+
+  .contact-cta h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-cta p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Responsive adjustments */
@@ -328,14 +312,6 @@ const projects = [
       grid-template-columns: 1fr;
     }
 
-    .about-image {
-      order: 2;
-    }
-
-    .about-text {
-      order: 1;
-    }
-
     .parallax-divider {
       height: 200px;
     }
@@ -343,7 +319,7 @@ const projects = [
 </style>
 
 <script>
-  // Smooth scroll for anchor links
+  // Скрипт для плавной прокрутки и выделения активного пункта меню
   document.addEventListener('DOMContentLoaded', () => {
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
@@ -351,7 +327,8 @@ const projects = [
       link.addEventListener('click', (e) => {
         e.preventDefault();
 
-        const target = document.querySelector(link.getAttribute('href'));
+        const href = link.getAttribute('href') || '';
+        const target = document.querySelector(href) as HTMLElement;
         if (target) {
           window.scrollTo({
             top: target.offsetTop,
@@ -369,8 +346,9 @@ const projects = [
       const scrollPosition = window.scrollY + 100;
 
       sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
+        const sectionElement = section as HTMLElement;
+        const sectionTop = sectionElement.offsetTop;
+        const sectionHeight = sectionElement.offsetHeight;
         const sectionId = section.getAttribute('id');
 
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
