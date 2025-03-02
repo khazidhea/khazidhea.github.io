@@ -41,6 +41,13 @@ jobs:
             cp -r public/* dist/ || true
             # Удаляем CNAME, чтобы не было редиректа на azamat.ai
             rm -f dist/CNAME
+            # Copy the English version to the root to eliminate redirect
+            if [ -d "dist/en" ]; then
+              cp -r dist/en/* dist/
+              # Create a language switcher or link in the root version if needed
+            else
+              echo "Warning: English version directory not found"
+            fi
             echo "Content after copying and CNAME update:"
             ls -la dist
           else
