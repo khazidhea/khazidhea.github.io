@@ -65,6 +65,7 @@ const year = new Date().getFullYear();
         line-height: 1.6;
         color: var(--dark-color);
         background-color: #fff;
+        overflow-x: hidden;
       }
 
       .container {
@@ -392,6 +393,19 @@ const year = new Date().getFullYear();
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinksContainer = document.querySelector('.nav-links');
+
+    menuToggle?.addEventListener('click', () => {
+      navLinksContainer?.classList.toggle('active');
+    });
+
+    navLinksContainer?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinksContainer.classList.remove('active');
+      });
+    });
+
     // Smooth scroll for anchor links
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
